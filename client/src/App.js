@@ -24,8 +24,7 @@ function Map() {
   const isSearching = search.trim().length > 0
 
   const filteredRooms = roomList.filter(room => {
-    const roomId = room.name.toLowerCase().replace(/ /g, '_')
-    const dbRoom = allRoomData.find(r => r.roomID === roomId)
+    const dbRoom = allRoomData.find(r => r.roomID === room.id)
     return (
       room.name.toLowerCase().includes(search.toLowerCase()) ||
       (dbRoom?.lecturer && dbRoom.lecturer.toLowerCase().includes(search.toLowerCase()))
@@ -39,8 +38,7 @@ function Map() {
       return
     }
     setSelectedRoom(room)
-    const roomId = room.name.toLowerCase().replace(/ /g, '_')
-    const data = await fetchRoomInfo(roomId)
+    const data = await fetchRoomInfo(room.id)
     setRoomInfo(data)
   }
 

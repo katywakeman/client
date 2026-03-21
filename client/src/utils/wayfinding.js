@@ -31,8 +31,10 @@ export function extractRoomsFromScene(scene) {
 
   scene.traverse((child) => {
     if (child.name.toLowerCase().startsWith('room_')) {
+      const label = child.name.replace(/^room_/i, '').replace('_', '.')
       extractedRooms.push({
-        name: child.name.replace(/_/g, ' '),
+        name: label,
+        id: child.name.toLowerCase(),
         position: [child.position.x, child.position.y, child.position.z]
       })
     }

@@ -12,15 +12,14 @@ export default function SearchPanel({ filteredRooms, search, setSearch, selected
       {filteredRooms.length === 0 && <div className="no-results">No rooms found</div>}
       {filteredRooms.map((room, i) => {
         const isSelected = selectedRoom?.name === room.name
-        const roomId = room.name.toLowerCase().replace(/ /g, '_')
-        const hasInfo = roomsWithInfo.has(roomId)
+        const hasInfo = roomsWithInfo.has(room.id)
         const isOpen = isSelected || (isSearching && hasInfo)
-        const displayData = (roomInfo && isSelected) ? roomInfo : allRoomData.find(r => r.roomID === roomId)
+        const displayData = (roomInfo && isSelected) ? roomInfo : allRoomData.find(r => r.roomID === room.id)
 
         return (
           <div key={i}>
             <button
-              onClick={() => hasInfo ? onRoomSelect(room) : null}
+              onClick={() => onRoomSelect(room)}
               className={`room-btn ${isSelected ? 'active' : ''}`}
             >
               {room.name}
