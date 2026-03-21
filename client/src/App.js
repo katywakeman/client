@@ -272,17 +272,28 @@ function Map() {
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
   const [roomsWithInfo, setRoomsWithInfo] = useState(new Set())
+  const [allRoomData, setAllRoomData] = useState([])
 
   useEffect(() => {
     fetch('http://localhost:3001/api/rooms')
       .then(res => res.json())
-      .then(data => setRoomsWithInfo(new Set(data.map(r => r.roomID))))
+      .then(data => {
+        setRoomsWithInfo(new Set(data.map(r => r.roomID)))
+        setAllRoomData(data)
+      })
       .catch(() => {})
   }, [])
 
-  const filteredRooms = roomList.filter(room =>
-    room.name.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredRooms = roomList.filter(room => {
+    const roomId = room.name.toLowerCase().replace(/ /g, '_')
+    const dbRoom = allRoomData.find(r => r.roomID === roomId)
+    return (
+      room.name.toLowerCase().includes(search.toLowerCase()) ||
+      (dbRoom?.lecturer && dbRoom.lecturer.toLowerCase().includes(search.toLowerCase()))
+    )
+  })
+
+  const isSearching = search.trim().length > 0
 
   const handleRoomSelect = async (room) => {
     if (selectedRoom?.name === room.name) {
@@ -378,6 +389,7 @@ function Map() {
           const isSelected = selectedRoom?.name === room.name
           const roomId = room.name.toLowerCase().replace(/ /g, '_')
           const hasInfo = roomsWithInfo.has(roomId)
+          const isOpen = isSelected || (isSearching && hasInfo)
           return (
             <div key={i}>
               <button
@@ -385,11 +397,11 @@ function Map() {
                 className={`room-btn ${isSelected ? 'active' : ''}`}
               >
                 {room.name}
-                {hasInfo && <span className="room-btn-arrow">{isSelected ? '▲' : '▼'}</span>}
+                {hasInfo && <span className="room-btn-arrow">{isOpen ? '▲' : '▼'}</span>}
               </button>
-              {isSelected && hasInfo && (
+              {isOpen && hasInfo && (
                 <div className="room-info">
-                  {roomInfo ? (
+                  {(roomInfo && isSelected) ? (
                     <>
                       {roomInfo.lecturer && <div><strong>Lecturer:</strong> {roomInfo.lecturer}</div>}
                       {roomInfo.email && <div><strong>Email:</strong> {roomInfo.email}</div>}
@@ -397,7 +409,17 @@ function Map() {
                       {roomInfo.description && <div><strong>Info:</strong> {roomInfo.description}</div>}
                     </>
                   ) : (
-                    <div>No info available</div>
+                    (() => {
+                      const dbRoom = allRoomData.find(r => r.roomID === roomId)
+                      return dbRoom ? (
+                        <>
+                          {dbRoom.lecturer && <div><strong>Lecturer:</strong> {dbRoom.lecturer}</div>}
+                          {dbRoom.email && <div><strong>Email:</strong> {dbRoom.email}</div>}
+                          {dbRoom.officeHours && <div><strong>Office Hours:</strong> {dbRoom.officeHours}</div>}
+                          {dbRoom.description && <div><strong>Info:</strong> {dbRoom.description}</div>}
+                        </>
+                      ) : null
+                    })()
                   )}
                 </div>
               )}
