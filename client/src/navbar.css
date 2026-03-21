@@ -1,0 +1,15 @@
+.navbar {
+  background-color: #E6EBED;
+}
+
+.login-btn {
+  background-color: #E12726;
+  border-color: #E12726;
+  border-radius: 8px;
+}
+
+.title {
+  position: relative;
+  top: 7px;
+}
+
