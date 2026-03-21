@@ -2,18 +2,19 @@
   display: flex;
   padding: 20px;
   gap: 20px;
-  background: #666;
+  background: #1a1f2e;
   min-height: calc(100vh - 60px);
 }
 
 .map-viewport {
   flex: 1;
   height: 80vh;
-  border: 2px solid #ccc;
-  border-radius: 8px;
+  border: 2px solid #2e3650;
+  border-radius: 10px;
   overflow: hidden;
   position: relative;
-  background: white;
+  background: #2e3650;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .view-toggle-btn {
@@ -21,12 +22,19 @@
   top: 10px;
   right: 10px;
   z-index: 10;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 8px 14px;
+  border-radius: 6px;
   background: #E12726;
   color: white;
   border: none;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(225, 39, 38, 0.4);
+}
+
+.view-toggle-btn:hover {
+  background: #c41f1e;
 }
 
 .labels-toggle-btn {
@@ -34,42 +42,66 @@
   top: 10px;
   right: 150px;
   z-index: 10;
-  padding: 10px;
-  border-radius: 5px;
-  background: #E12726;
-  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #2e3650;
+  color: #c8d0e0;
   border: none;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.labels-toggle-btn:hover {
+  background: #3a4466;
 }
 
 .search-panel {
-  width: 250px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  padding: 15px;
-  border: 2px solid #ccc;
+  width: 260px;
+  background: #212638;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #2e3650;
   overflow-y: auto;
   height: 80vh;
   box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .search-panel-title {
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 12px;
   font-size: 16px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #E12726;
+  padding-bottom: 8px;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid #2e3650;
+  margin-bottom: 12px;
   box-sizing: border-box;
+  background: #1a1f2e;
+  color: #c8d0e0;
+  font-size: 13px;
+}
+
+.search-input::placeholder {
+  color: #5a6480;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #E12726;
 }
 
 .no-results {
-  color: #999;
+  color: #5a6480;
   font-size: 13px;
 }
 
@@ -78,58 +110,76 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 5px 0;
-  padding: 8px;
-  background: #f0f0f0;
-  color: black;
+  margin: 4px 0;
+  padding: 9px 12px;
+  background: #2e3650;
+  color: #c8d0e0;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   text-align: left;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+
+.room-btn:hover {
+  background: #3a4466;
 }
 
 .room-btn.active {
   background: #E12726;
   color: white;
-  border-radius: 5px 5px 0 0;
+  border-radius: 6px 6px 0 0;
   margin-bottom: 0;
 }
 
 .room-btn-arrow {
   font-size: 10px;
   margin-left: 8px;
+  opacity: 0.8;
 }
 
 .room-info {
-  padding: 8px 10px;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
+  padding: 10px 12px;
+  background: #1a1f2e;
+  border: 1px solid #2e3650;
   border-top: none;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 6px 6px;
   font-size: 13px;
-  line-height: 1.8;
-  margin-bottom: 5px;
+  line-height: 1.9;
+  margin-bottom: 4px;
+  color: #c8d0e0;
+}
+
+.room-info strong {
+  color: #ffffff;
 }
 
 .clear-btn {
   display: block;
   width: 100%;
-  margin-top: 10px;
-  padding: 8px;
-  background: #666;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  margin-top: 12px;
+  padding: 9px;
+  background: #2e3650;
+  color: #c8d0e0;
+  border: 1px solid #3a4466;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+
+.clear-btn:hover {
+  background: #3a4466;
 }
 
 .room-label {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
+  background: rgba(20, 25, 45, 0.85);
+  color: #e8ecf4;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 12px;
   white-space: nowrap;
   cursor: pointer;
+  border: 1px solid rgba(225, 39, 38, 0.5);
 }
-

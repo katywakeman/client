@@ -271,6 +271,14 @@ function Map() {
   const [roomList, setRoomList] = useState(rooms)
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
+  const [roomsWithInfo, setRoomsWithInfo] = useState(new Set())
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/rooms')
+      .then(res => res.json())
+      .then(data => setRoomsWithInfo(new Set(data.map(r => r.roomID))))
+      .catch(() => {})
+  }, [])
 
   const filteredRooms = roomList.filter(room =>
     room.name.toLowerCase().includes(search.toLowerCase())
@@ -368,16 +376,18 @@ function Map() {
         )}
         {filteredRooms.map((room, i) => {
           const isSelected = selectedRoom?.name === room.name
+          const roomId = room.name.toLowerCase().replace(/ /g, '_')
+          const hasInfo = roomsWithInfo.has(roomId)
           return (
             <div key={i}>
               <button
-                onClick={() => handleRoomSelect(room)}
+                onClick={() => hasInfo ? handleRoomSelect(room) : setSelectedRoom(isSelected ? null : room)}
                 className={`room-btn ${isSelected ? 'active' : ''}`}
               >
                 {room.name}
-                <span className="room-btn-arrow">{isSelected ? '▲' : '▼'}</span>
+                {hasInfo && <span className="room-btn-arrow">{isSelected ? '▲' : '▼'}</span>}
               </button>
-              {isSelected && (
+              {isSelected && hasInfo && (
                 <div className="room-info">
                   {roomInfo ? (
                     <>

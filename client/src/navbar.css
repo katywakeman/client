@@ -1,15 +1,28 @@
 .navbar {
-  background-color: #E6EBED;
+  background-color: #151929;
+  border-bottom: 2px solid #E12726;
+}
+
+.navbar-brand, .navbar-brand:hover {
+  color: #ffffff;
 }
 
 .login-btn {
   background-color: #E12726;
   border-color: #E12726;
-  border-radius: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.login-btn:hover {
+  background-color: #c41f1e;
+  border-color: #c41f1e;
 }
 
 .title {
   position: relative;
   top: 7px;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
-
