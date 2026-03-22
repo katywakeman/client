@@ -8,6 +8,7 @@ import PathLine from './components/PathLine'
 import { SafePointerLockControls, WalkingControls } from './components/WalkingControls'
 import SearchPanel from './components/SearchPanel'
 import { useRoomData } from './hooks/useRoomData'
+import BathroomMarker from './components/BathroomMarker'
 import { defaultRooms, extractRoomsFromScene } from './utils/wayfinding'
 import './App.css'
 
@@ -16,6 +17,7 @@ function Map() {
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [showLabels, setShowLabels] = useState(true)
   const [roomList, setRoomList] = useState(defaultRooms)
+  const [bathrooms, setBathrooms] = useState([])
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
 
@@ -29,7 +31,7 @@ function Map() {
       room.name.toLowerCase().includes(search.toLowerCase()) ||
       (dbRoom?.lecturer && dbRoom.lecturer.toLowerCase().includes(search.toLowerCase()))
     )
-  })
+  }).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
 
   const handleRoomSelect = async (room) => {
     if (selectedRoom?.name === room.name) {
@@ -43,7 +45,9 @@ function Map() {
   }
 
   const handleSceneLoad = (scene) => {
-    setRoomList(extractRoomsFromScene(scene))
+    const { rooms, bathrooms } = extractRoomsFromScene(scene)
+    setRoomList(rooms)
+    setBathrooms(bathrooms)
   }
 
   const toggleWalking = () => {
@@ -77,6 +81,9 @@ function Map() {
             <BlenderModel path="/BushHouseFloor7.glb" onLoad={handleSceneLoad} />
             {showLabels && roomList.map((room, i) => (
               <RoomLabel key={i} room={room} isSelected={selectedRoom?.name === room.name} onClick={() => handleRoomSelect(room)} />
+            ))}
+            {showLabels && bathrooms.map((pos, i) => (
+              <BathroomMarker key={i} position={pos} />
             ))}
             {selectedRoom && <PathLine start={[0, 0, 0]} end={selectedRoom.position} />}
             {isWalking ? (
