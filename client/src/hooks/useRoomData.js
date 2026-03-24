@@ -9,18 +9,10 @@ export function useRoomData() {
       .then(res => res.json())
       .then(data => {
         setAllRoomData(data)
-        setRoomsWithInfo(new Set(data.map(r => r.roomID)))
+        setRoomsWithInfo(new Set(data.filter(r => r.lecturers?.length > 0).map(r => r.name)))
       })
       .catch(() => {})
   }, [])
 
-  const fetchRoomInfo = async (roomId) => {
-    try {
-      const res = await fetch(`http://localhost:3001/api/rooms/${roomId}`)
-      if (res.ok) return await res.json()
-    } catch {}
-    return null
-  }
-
-  return { allRoomData, roomsWithInfo, fetchRoomInfo }
+  return { allRoomData, roomsWithInfo }
 }

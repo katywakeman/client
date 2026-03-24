@@ -12,9 +12,9 @@ export default function SearchPanel({ filteredRooms, search, setSearch, selected
       {filteredRooms.length === 0 && <div className="no-results">No rooms found</div>}
       {filteredRooms.map((room, i) => {
         const isSelected = selectedRoom?.name === room.name
-        const hasInfo = roomsWithInfo.has(room.id)
+        const hasInfo = roomsWithInfo.has(room.name)
         const isOpen = isSelected || (isSearching && hasInfo)
-        const displayData = (roomInfo && isSelected) ? roomInfo : allRoomData.find(r => r.roomID === room.id)
+        const displayData = (roomInfo && isSelected) ? roomInfo : allRoomData.find(r => r.name === room.name)
 
         return (
           <div key={i}>
@@ -27,10 +27,15 @@ export default function SearchPanel({ filteredRooms, search, setSearch, selected
             </button>
             {isOpen && hasInfo && displayData && (
               <div className="room-info">
-                {displayData.lecturer && <div><strong>Lecturer:</strong> {displayData.lecturer}</div>}
-                {displayData.email && <div><strong>Email:</strong> {displayData.email}</div>}
-                {displayData.officeHours && <div><strong>Office Hours:</strong> {displayData.officeHours}</div>}
-                {displayData.description && <div><strong>Info:</strong> {displayData.description}</div>}
+                {displayData.lecturers?.length > 0 && displayData.lecturers.map((l, i) => (
+                <div key={i} className="lecturer-info">
+                  {i > 0 && <hr className="lecturer-divider" />}
+                  {l.name && <div><strong>Lecturer:</strong> {l.name}</div>}
+                  {l._id && <div><strong>Email:</strong> {l._id}</div>}
+                  {l.office_hours && <div><strong>Office Hours:</strong> {l.office_hours}</div>}
+                  {l.department && <div><strong>Department:</strong> {l.department}</div>}
+                </div>
+              ))}
               </div>
             )}
           </div>

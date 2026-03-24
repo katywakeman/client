@@ -21,26 +21,26 @@ function Map() {
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
 
-  const { allRoomData, roomsWithInfo, fetchRoomInfo } = useRoomData()
+  const { allRoomData, roomsWithInfo } = useRoomData()
 
   const isSearching = search.trim().length > 0
 
   const filteredRooms = roomList.filter(room => {
-    const dbRoom = allRoomData.find(r => r.roomID === room.id)
+    const dbRoom = allRoomData.find(r => r.name === room.name)
     return (
       room.name.toLowerCase().includes(search.toLowerCase()) ||
-      (dbRoom?.lecturer && dbRoom.lecturer.toLowerCase().includes(search.toLowerCase()))
+      (dbRoom?.lecturers?.some(l => l.name.toLowerCase().includes(search.toLowerCase())))
     )
   }).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
 
-  const handleRoomSelect = async (room) => {
+  const handleRoomSelect = (room) => {
     if (selectedRoom?.name === room.name) {
       setSelectedRoom(null)
       setRoomInfo(null)
       return
     }
     setSelectedRoom(room)
-    const data = await fetchRoomInfo(room.id)
+    const data = allRoomData.find(r => r.name === room.name) || null
     setRoomInfo(data)
   }
 

@@ -121,7 +121,6 @@ export function findPath(startPos, endPos, graph) {
 
   const startWp = getNearestWaypoint(startPos)
   const endWp = getNearestWaypoint(endPos)
-  console.log('startWp:', startWp, 'endWp:', endWp)
 
   if (!startWp || !endWp) return [startPos, endPos]
 
