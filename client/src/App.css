@@ -219,6 +219,54 @@ html, body, #root {
   background: #3a4466;
 }
 
+.floor-controls {
+  position: absolute;
+  top: 46px;
+  left: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.floor-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #2e3650;
+  color: #c8d0e0;
+  border: 1px solid #3a4466;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.floor-btn:hover:not(:disabled) {
+  background: #3a4466;
+}
+
+.floor-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.floor-indicator {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+  background: #2e3650;
+  color: #c8d0e0;
+  border: 1px solid #3a4466;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .info-overlay {
   position: absolute;
   inset: 0;
@@ -269,4 +317,73 @@ html, body, #root {
   cursor: pointer;
   font-size: 16px;
   line-height: 1;
+}
+
+.building-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 60px);
+  background: #1a1f2e;
+}
+
+.building-select-title {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #E12726;
+  padding-bottom: 10px;
+}
+
+.building-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  max-width: 800px;
+}
+
+.building-btn {
+  padding: 20px 36px;
+  background: #212638;
+  color: #c8d0e0;
+  border: 1px solid #2e3650;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.15s, border-color 0.15s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.building-btn:hover {
+  background: #2e3650;
+  border-color: #E12726;
+  color: #ffffff;
+}
+
+.building-none {
+  color: #5a6480;
+  font-size: 14px;
+}
+
+.back-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #2e3650;
+  color: #c8d0e0;
+  border: 1px solid #3a4466;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.back-btn:hover {
+  background: #3a4466;
 }

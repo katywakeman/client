@@ -10,19 +10,29 @@ import SearchPanel from './components/SearchPanel'
 import { useRoomData } from './hooks/useRoomData'
 import InfoModal from './components/InfoModal'
 import BathroomMarker from './components/BathroomMarker'
+import BuildingSelect from './components/BuildingSelect'
 import { defaultRooms, extractRoomsFromScene } from './utils/wayfinding'
 import './App.css'
 
-function Map() {
+const FLOORS_BY_BUILDING = {
+  'BLD-001': [
+    { number: 7, label: 'Floor 7', file: '/BushHouseFloor7.glb' },
+  ]
+}
+
+function Map({ building, onBack }) {
+  const FLOORS = FLOORS_BY_BUILDING[building._id] || [{ number: 1, label: 'Floor 1', file: null }]
   const [isWalking, setIsWalking] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [showLabels, setShowLabels] = useState(true)
-  const [roomList, setRoomList] = useState(defaultRooms)
+  const [roomList, setRoomList] = useState(FLOORS[0].file ? defaultRooms : [])
   const [bathrooms, setBathrooms] = useState([])
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
 
   const [showInfo, setShowInfo] = useState(false)
+  const [floorIndex, setFloorIndex] = useState(0)
+  const currentFloor = FLOORS[floorIndex]
 
   const { allRoomData, roomsWithInfo } = useRoomData()
 
@@ -45,6 +55,16 @@ function Map() {
     setSelectedRoom(room)
     const data = allRoomData.find(r => r.name === room.name) || null
     setRoomInfo(data)
+  }
+
+  const handleFloorChange = (dir) => {
+    const next = floorIndex + dir
+    if (next < 0 || next >= FLOORS.length) return
+    setFloorIndex(next)
+    setSelectedRoom(null)
+    setRoomInfo(null)
+    setRoomList(FLOORS[next].file ? defaultRooms : [])
+    setBathrooms([])
   }
 
   const handleSceneLoad = (scene) => {
@@ -74,6 +94,11 @@ function Map() {
     <div className="map-container">
       <div className="map-viewport">
         <button className="info-btn" onClick={() => setShowInfo(true)}>i</button>
+        <button className="back-btn" onClick={onBack}>← Buildings</button>
+        <div className="floor-controls">
+          <button className="floor-btn" onClick={() => handleFloorChange(1)} disabled={floorIndex >= FLOORS.length - 1}>▲</button>
+          <button className="floor-btn" onClick={() => handleFloorChange(-1)} disabled={floorIndex <= 0}>▼</button>
+        </div>
         {showInfo && <InfoModal onClose={() => setShowInfo(false)} />}
         <button className="labels-toggle-btn" onClick={() => setShowLabels(!showLabels)}>
           {showLabels ? 'Hide Labels' : 'Show Labels'}
@@ -83,7 +108,10 @@ function Map() {
         </button>
         <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }}>
           <Suspense fallback={null}>
-            <BlenderModel path="/BushHouseFloor7.glb" onLoad={handleSceneLoad} />
+            {currentFloor.file
+              ? <BlenderModel key={currentFloor.file} path={currentFloor.file} onLoad={handleSceneLoad} />
+              : null
+            }
             {showLabels && roomList.map((room, i) => (
               <RoomLabel key={i} room={room} isSelected={selectedRoom?.name === room.name} onClick={() => handleRoomSelect(room)} />
             ))}
@@ -104,6 +132,7 @@ function Map() {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
         </Canvas>
+        <div className="floor-indicator">{currentFloor.label}</div>
       </div>
       <SearchPanel
         filteredRooms={filteredRooms}
@@ -122,10 +151,16 @@ function Map() {
 }
 
 export default function App() {
+  const [selectedBuilding, setSelectedBuilding] = useState(null)
+
   return (
     <>
       <Navigation />
-      <Map />
+      {selectedBuilding ? (
+        <Map building={selectedBuilding} onBack={() => setSelectedBuilding(null)} />
+      ) : (
+        <BuildingSelect onSelect={setSelectedBuilding} />
+      )}
     </>
   )
 }
