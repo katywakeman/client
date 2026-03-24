@@ -26,13 +26,6 @@ function Map() {
 
   const { allRoomData, roomsWithInfo } = useRoomData()
 
-  useEffect(() => {
-    if (allRoomData.length && roomList.length) {
-      console.log('sample roomList names:', roomList.slice(0,5).map(r => r.name))
-      console.log('sample allRoomData names:', allRoomData.slice(0,5).map(r => r.name))
-    }
-  }, [allRoomData, roomList])
-
   const isSearching = search.trim().length > 0
 
   const filteredRooms = roomList.filter(room => {
@@ -82,11 +75,11 @@ function Map() {
       <div className="map-viewport">
         <button className="info-btn" onClick={() => setShowInfo(true)}>i</button>
         {showInfo && <InfoModal onClose={() => setShowInfo(false)} />}
-        <button className="view-toggle-btn" onClick={toggleWalking}>
-          {isWalking ? 'Orbit View' : 'Walking View'}
-        </button>
         <button className="labels-toggle-btn" onClick={() => setShowLabels(!showLabels)}>
           {showLabels ? 'Hide Labels' : 'Show Labels'}
+        </button>
+        <button className="view-toggle-btn" onClick={toggleWalking}>
+          {isWalking ? 'Orbit View' : 'Walking View'}
         </button>
         <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }}>
           <Suspense fallback={null}>

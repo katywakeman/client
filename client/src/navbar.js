@@ -7,7 +7,7 @@ import './navbar.css';
 function Navigation() {
   return (
     <Navbar expand="lg" className="navbar">
-      <Container>
+      <div className="navbar-inner">
         <Navbar.Brand href="#home">
           <img
             src="/kcl_logo.png"
@@ -25,7 +25,7 @@ function Navigation() {
             <Button href="#login" className="login-btn">Login</Button>
           </Nav>
         </Navbar.Collapse>
-      </Container>
+      </div>
     </Navbar>
   );
 }

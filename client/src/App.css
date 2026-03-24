@@ -1,14 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
 .map-container {
   display: flex;
   padding: 20px;
   gap: 20px;
   background: #1a1f2e;
-  min-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
+  padding-bottom: 30px;
 }
 
 .map-viewport {
   flex: 1;
-  height: 80vh;
+  height: 100%;
   border: 2px solid #2e3650;
   border-radius: 10px;
   overflow: hidden;
@@ -40,7 +51,7 @@
 .labels-toggle-btn {
   position: absolute;
   top: 10px;
-  right: 150px;
+  right: 130px;
   z-index: 10;
   padding: 8px 14px;
   border-radius: 6px;
@@ -64,7 +75,7 @@
   padding: 16px;
   border: 1px solid #2e3650;
   overflow-y: auto;
-  height: 80vh;
+  height: 100%;
   box-sizing: border-box;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }

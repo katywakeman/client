@@ -3,6 +3,13 @@
   border-bottom: 2px solid #E12726;
 }
 
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+}
+
 .navbar-brand, .navbar-brand:hover {
   color: #ffffff;
 }
