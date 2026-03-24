@@ -21,7 +21,16 @@ function Map() {
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
 
+  const [showInfo, setShowInfo] = useState(false)
+
   const { allRoomData, roomsWithInfo } = useRoomData()
+
+  useEffect(() => {
+    if (allRoomData.length && roomList.length) {
+      console.log('sample roomList names:', roomList.slice(0,5).map(r => r.name))
+      console.log('sample allRoomData names:', allRoomData.slice(0,5).map(r => r.name))
+    }
+  }, [allRoomData, roomList])
 
   const isSearching = search.trim().length > 0
 

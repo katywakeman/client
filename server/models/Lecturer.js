@@ -10,13 +10,3 @@ const lecturerSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema, 'lecturer')
-
-try {
-  const result = await Lecturer.insertMany(lecturers);
-  console.log("Inserted:", result);
-} catch (err) {
-  console.log("Failed at index:", err.index);
-  console.log("Error message:", err.message);
-  console.log("Failed document:", err.op);
-  console.log("Full error:", err);
-}
