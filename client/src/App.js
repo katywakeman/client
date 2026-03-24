@@ -8,6 +8,7 @@ import PathLine from './components/PathLine'
 import { SafePointerLockControls, WalkingControls } from './components/WalkingControls'
 import SearchPanel from './components/SearchPanel'
 import { useRoomData } from './hooks/useRoomData'
+import InfoModal from './components/InfoModal'
 import BathroomMarker from './components/BathroomMarker'
 import { defaultRooms, extractRoomsFromScene } from './utils/wayfinding'
 import './App.css'
@@ -79,6 +80,8 @@ function Map() {
   return (
     <div className="map-container">
       <div className="map-viewport">
+        <button className="info-btn" onClick={() => setShowInfo(true)}>i</button>
+        {showInfo && <InfoModal onClose={() => setShowInfo(false)} />}
         <button className="view-toggle-btn" onClick={toggleWalking}>
           {isWalking ? 'Orbit View' : 'Walking View'}
         </button>
