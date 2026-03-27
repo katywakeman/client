@@ -195,6 +195,13 @@ html, body, #root {
   border: 1px solid rgba(225, 39, 38, 0.5);
 }
 
+.search-highlight {
+  background: #E12726;
+  color: #ffffff;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
 .info-btn {
   position: absolute;
   top: 10px;
@@ -346,6 +353,7 @@ html, body, #root {
 }
 
 .building-btn {
+  position: relative;
   padding: 20px 36px;
   background: #212638;
   color: #c8d0e0;
@@ -358,10 +366,22 @@ html, body, #root {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-.building-btn:hover {
+.building-btn:hover:not(:disabled) {
   background: #2e3650;
   border-color: #E12726;
   color: #ffffff;
+}
+
+.building-btn-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.building-lock {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 12px;
 }
 
 .building-none {

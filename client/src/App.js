@@ -9,7 +9,7 @@ import { SafePointerLockControls, WalkingControls } from './components/WalkingCo
 import SearchPanel from './components/SearchPanel'
 import { useRoomData } from './hooks/useRoomData'
 import InfoModal from './components/InfoModal'
-import BathroomMarker from './components/BathroomMarker'
+import AmenityMarker from './components/AmenityMarker'
 import BuildingSelect from './components/BuildingSelect'
 import { defaultRooms, extractRoomsFromScene } from './utils/wayfinding'
 import './App.css'
@@ -20,13 +20,15 @@ const FLOORS_BY_BUILDING = {
   ]
 }
 
-function Map({ building, onBack }) {
+function Map({ building, onBack, children }) {
   const FLOORS = FLOORS_BY_BUILDING[building._id] || [{ number: 1, label: 'Floor 1', file: null }]
   const [isWalking, setIsWalking] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [showLabels, setShowLabels] = useState(true)
   const [roomList, setRoomList] = useState(FLOORS[0].file ? defaultRooms : [])
   const [bathrooms, setBathrooms] = useState([])
+  const [bins, setBins] = useState([])
+  const [printers, setPrinters] = useState([])
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
 
@@ -65,12 +67,16 @@ function Map({ building, onBack }) {
     setRoomInfo(null)
     setRoomList(FLOORS[next].file ? defaultRooms : [])
     setBathrooms([])
+    setBins([])
+    setPrinters([])
   }
 
   const handleSceneLoad = (scene) => {
-    const { rooms, bathrooms } = extractRoomsFromScene(scene)
+    const { rooms, bathrooms, bins, printers } = extractRoomsFromScene(scene)
     setRoomList(rooms)
     setBathrooms(bathrooms)
+    setBins(bins)
+    setPrinters(printers)
   }
 
   const toggleWalking = () => {
@@ -100,6 +106,7 @@ function Map({ building, onBack }) {
           <button className="floor-btn" onClick={() => handleFloorChange(-1)} disabled={floorIndex <= 0}>▼</button>
         </div>
         {showInfo && <InfoModal onClose={() => setShowInfo(false)} />}
+        {children}
         <button className="labels-toggle-btn" onClick={() => setShowLabels(!showLabels)}>
           {showLabels ? 'Hide Labels' : 'Show Labels'}
         </button>
@@ -116,7 +123,13 @@ function Map({ building, onBack }) {
               <RoomLabel key={i} room={room} isSelected={selectedRoom?.name === room.name} onClick={() => handleRoomSelect(room)} />
             ))}
             {showLabels && bathrooms.map((pos, i) => (
-              <BathroomMarker key={i} position={pos} />
+              <AmenityMarker key={i} position={pos} emoji="🚻" />
+            ))}
+            {showLabels && bins.map((pos, i) => (
+              <AmenityMarker key={i} position={pos} emoji="🗑️" />
+            ))}
+            {showLabels && printers.map((pos, i) => (
+              <AmenityMarker key={i} position={pos} emoji="🖨️" />
             ))}
             {selectedRoom && <PathLine start={[0, 0, 0]} end={selectedRoom.position} />}
             {isWalking ? (
@@ -152,14 +165,22 @@ function Map({ building, onBack }) {
 
 export default function App() {
   const [selectedBuilding, setSelectedBuilding] = useState(null)
+  const [showTutorial, setShowTutorial] = useState(false)
+
+  const handleBuildingSelect = (b) => {
+    setSelectedBuilding(b)
+    if (b.name === 'Bush House') setShowTutorial(true)
+  }
 
   return (
     <>
       <Navigation />
       {selectedBuilding ? (
-        <Map building={selectedBuilding} onBack={() => setSelectedBuilding(null)} />
+        <Map building={selectedBuilding} onBack={() => setSelectedBuilding(null)}>
+          {showTutorial && <InfoModal onClose={() => setShowTutorial(false)} />}
+        </Map>
       ) : (
-        <BuildingSelect onSelect={setSelectedBuilding} />
+        <BuildingSelect onSelect={handleBuildingSelect} />
       )}
     </>
   )
