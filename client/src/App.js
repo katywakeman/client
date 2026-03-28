@@ -11,7 +11,7 @@ import { useRoomData } from './hooks/useRoomData'
 import InfoModal from './components/InfoModal'
 import AmenityMarker from './components/AmenityMarker'
 import BuildingSelect from './components/BuildingSelect'
-import { defaultRooms, extractRoomsFromScene } from './utils/wayfinding'
+import { extractRoomsFromScene } from './utils/wayfinding'
 import './App.css'
 
 const FLOORS_BY_BUILDING = {
@@ -25,7 +25,7 @@ function Map({ building, onBack, children }) {
   const [isWalking, setIsWalking] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [showLabels, setShowLabels] = useState(true)
-  const [roomList, setRoomList] = useState(FLOORS[0].file ? defaultRooms : [])
+  const [roomList, setRoomList] = useState([])
   const [bathrooms, setBathrooms] = useState([])
   const [bins, setBins] = useState([])
   const [printers, setPrinters] = useState([])
@@ -65,7 +65,7 @@ function Map({ building, onBack, children }) {
     setFloorIndex(next)
     setSelectedRoom(null)
     setRoomInfo(null)
-    setRoomList(FLOORS[next].file ? defaultRooms : [])
+    setRoomList([])
     setBathrooms([])
     setBins([])
     setPrinters([])

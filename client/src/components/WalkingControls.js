@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Vector3 } from 'three'
 import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
@@ -30,7 +29,7 @@ export function SafePointerLockControls() {
 
 export function WalkingControls() {
   const keys = useRef({ w: false, a: false, s: false, d: false, ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, space: false })
-  const velocity = useRef({ x: 0, y: 0, z: 0 })
+  const velocity = useRef({ y: 0 })
   const onGround = useRef(true)
 
   useFrame((state) => {
@@ -68,7 +67,7 @@ export function WalkingControls() {
     }
   })
 
-  useState(() => {
+  useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === ' ') { keys.current.space = true; e.preventDefault() }
       else if (e.key in keys.current) keys.current[e.key] = true
@@ -83,7 +82,7 @@ export function WalkingControls() {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  })
+  }, [])
 
   return null
 }
