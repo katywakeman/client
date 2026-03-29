@@ -10,6 +10,7 @@ export default function InfoModal({ onClose }) {
           <li><strong>Find a Room:</strong> Search by room name or lecturer in the panel</li>
           <li><strong>Room Info:</strong> Click a room to see lecturer details and highlight a path</li>
           <li><strong>Labels:</strong> Toggle room labels with the Hide/Show Labels button</li>
+          <li><strong>Symbols:</strong> Bathrooms, bins, and printers are shown by their relevant emojis</li>
         </ul>
       </div>
     </div>
