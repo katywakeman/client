@@ -1,10 +1,3 @@
-export const defaultRooms = [
-  { name: 'Room 101', position: [2, 0, 2] },
-  { name: 'Room 102', position: [-2, 0, 2] },
-  { name: 'Room 103', position: [2, 0, -2] },
-  { name: 'Lobby', position: [0, 0, 0] }
-]
-
 export const waypointConnections = {
   'lobby': ['mid_hallway', 'mid_hallway001', 'door_north'],
   'door_north': ['lobby', 'door_north001'],
@@ -58,13 +51,7 @@ export const waypointConnections = {
   'door024': ['door022', 'door_north001'],
 }
 
-export let waypointGraph = {
-  'lobby': { position: [0, 0, 0], connections: ['hallway1', 'hallway2'] },
-  'hallway1': { position: [1, 0, 0], connections: ['lobby', 'room101'] },
-  'hallway2': { position: [-1, 0, 0], connections: ['lobby', 'room102'] },
-  'room101': { position: [2, 0, 2], connections: ['hallway1'] },
-  'room102': { position: [-2, 0, 2], connections: ['hallway2'] }
-}
+export let waypointGraph = {}
 
 export function extractRoomsFromScene(scene) {
   const extractedRooms = []
@@ -107,22 +94,20 @@ export function extractRoomsFromScene(scene) {
     waypointGraph = extractedWaypoints
   }
 
-  return { rooms: extractedRooms.length > 0 ? extractedRooms : defaultRooms, bathrooms: extractedBathrooms, bins: extractedBins, printers: extractedPrinters }
+  return { rooms: extractedRooms, bathrooms: extractedBathrooms, bins: extractedBins, printers: extractedPrinters }
 }
 
 export function findPath(startPos, endPos, graph) {
+  const dist2D = (a, b) => Math.sqrt(
+    Math.pow(a[0] - b[0], 2) + Math.pow(a[2] - b[2], 2)
+  )
+
   const getNearestWaypoint = (pos) => {
     let nearest = null
     let minDist = Infinity
     for (const [name, wp] of Object.entries(graph)) {
-      const dist = Math.sqrt(
-        Math.pow(pos[0] - wp.position[0], 2) +
-        Math.pow(pos[2] - wp.position[2], 2)
-      )
-      if (dist < minDist) {
-        minDist = dist
-        nearest = name
-      }
+      const d = dist2D(pos, wp.position)
+      if (d < minDist) { minDist = d; nearest = name }
     }
     return nearest
   }
@@ -132,27 +117,38 @@ export function findPath(startPos, endPos, graph) {
 
   if (!startWp || !endWp) return [startPos, endPos]
 
-  const queue = [[startWp]]
-  const visited = new Set([startWp])
+  const costs = { [startWp]: 0 }
+  const prev = {}
+  const unvisited = new Set(Object.keys(graph))
 
-  while (queue.length > 0) {
-    const path = queue.shift()
-    const current = path[path.length - 1]
+  while (unvisited.size > 0) {
+    const current = [...unvisited].reduce((a, b) =>
+      (costs[a] ?? Infinity) < (costs[b] ?? Infinity) ? a : b
+    )
 
-    if (current === endWp) {
-      const positions = [startPos]
-      for (const wpName of path) positions.push(graph[wpName].position)
-      positions.push(endPos)
-      return positions
-    }
+    if (current === endWp) break
+    if ((costs[current] ?? Infinity) === Infinity) break
+
+    unvisited.delete(current)
 
     for (const next of graph[current]?.connections || []) {
-      if (!visited.has(next)) {
-        visited.add(next)
-        queue.push([...path, next])
+      if (!unvisited.has(next)) continue
+      const newCost = costs[current] + dist2D(graph[current].position, graph[next].position)
+      if (newCost < (costs[next] ?? Infinity)) {
+        costs[next] = newCost
+        prev[next] = current
       }
     }
   }
 
-  return [startPos, endPos]
+  if (!prev[endWp] && startWp !== endWp) return [startPos, endPos]
+
+  const path = []
+  let current = endWp
+  while (current) { path.unshift(current); current = prev[current] }
+
+  const positions = [startPos]
+  for (const wpName of path) positions.push(graph[wpName].position)
+  positions.push(endPos)
+  return positions
 }

@@ -36,7 +36,7 @@ export function WalkingControls() {
     const speed = 0.1
     const gravity = -0.02
     const jumpForce = 0.3
-    const groundLevel = 1
+    const groundLevel = 0.75
     const camera = state.camera
     const direction = new Vector3()
 
