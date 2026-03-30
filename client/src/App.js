@@ -119,9 +119,13 @@ function Map({ building, onBack, children }) {
         <button className="labels-toggle-btn" onClick={() => setShowLabels(!showLabels)}>
           {showLabels ? 'Hide Labels' : 'Show Labels'}
         </button>
-        <button className="view-toggle-btn" onClick={toggleWalking}>
-          {isWalking ? 'Orbit View' : 'Walking View'}
-        </button>
+        <div className="view-toggle" onClick={toggleWalking}>
+          <span className={`view-toggle-label ${!isWalking ? 'active' : ''}`}>Orbit</span>
+          <div className={`view-toggle-switch ${isWalking ? 'on' : ''}`}>
+            <div className="view-toggle-knob" />
+          </div>
+          <span className={`view-toggle-label ${isWalking ? 'active' : ''}`}>Walk</span>
+        </div>
         <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }}>
           <Suspense fallback={null}>
             {currentFloor.file

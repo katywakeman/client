@@ -28,30 +28,66 @@ html, body, #root {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-.view-toggle-btn {
+.view-toggle {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 10;
-  padding: 8px 14px;
-  border-radius: 6px;
-  background: #E12726;
-  color: white;
-  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(225, 39, 38, 0.4);
+  background: #212638;
+  border: 1px solid #2e3650;
+  border-radius: 20px;
+  padding: 5px 10px;
 }
 
-.view-toggle-btn:hover {
-  background: #c41f1e;
+.view-toggle-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a6480;
+  transition: color 0.2s;
+}
+
+.view-toggle-label.active {
+  color: #ffffff;
+}
+
+.view-toggle-switch {
+  width: 36px;
+  height: 20px;
+  background: #2e3650;
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.2s;
+  border: 1px solid #3a4466;
+}
+
+.view-toggle-switch.on {
+  background: #E12726;
+  border-color: #E12726;
+}
+
+.view-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.view-toggle-switch.on .view-toggle-knob {
+  transform: translateX(16px);
 }
 
 .labels-toggle-btn {
   position: absolute;
   top: 10px;
-  right: 130px;
+  right: 145px;
   z-index: 10;
   padding: 8px 14px;
   border-radius: 6px;
