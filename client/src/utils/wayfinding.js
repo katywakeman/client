@@ -17,7 +17,7 @@ export const waypointConnections = {
   'door_north014': ['door_north004'],
   'door_north_014': ['door_north004'],
   'door_north_015': ['door_north005'],
-  'mid_hallway': ['lobby', 'door_701'],
+  'mid_hallway': ['lobby', 'door_701', 'door_702001'],
   'mid_hallway001': ['lobby', 'door_703', 'mid_hallway003'],
   'mid_hallway003': ['mid_hallway001', 'door_705', 'mid_hallway002'],
   'mid_hallway002': ['mid_hallway003', 'door_706'],
@@ -25,9 +25,11 @@ export const waypointConnections = {
   'door_705': ['mid_hallway003'],
   'door_703': ['mid_hallway001'],
   'door_701': ['mid_hallway'],
+  'door_702': ['door_702001'],
+  'door_702001': ['mid_hallway', 'door_702'],
   'door001': ['door_north006', 'door002'],
-  'door002': ['door001', 'door003'],
-  'door003': ['door002', 'door004'],
+  'door002': ['door001', 'door003', 'door026'],
+  'door003': ['door002', 'door004', 'door025'],
   'door004': ['door003', 'door005', 'door007'],
   'door005': ['door004'],
   'door006': ['door007'],
@@ -49,6 +51,9 @@ export const waypointConnections = {
   'door022': ['door019', 'door024', 'door021', 'door023'],
   'door023': ['door022'],
   'door024': ['door022', 'door_north001'],
+  'door025': ['door003', 'door026'],
+  'door026': ['door025', 'door002', 'room_7_13n'],
+  'room_7_13n': ['door026'],
 }
 
 export let waypointGraph = {}
@@ -61,29 +66,16 @@ export function extractRoomsFromScene(scene) {
   const extractedPrinters = []
 
   scene.traverse((child) => {
-    if (child.name.toLowerCase().startsWith('room_')) {
+    const nameLower = child.name.toLowerCase()
+    if (nameLower.startsWith('waypoint_') || nameLower.startsWith('wp_')) {
+      const wpName = nameLower.replace('waypoint_', '').replace('wp_', '')
+      if (wpName.startsWith('bathroom')) extractedBathrooms.push([child.position.x, child.position.y, child.position.z])
+      else if (wpName.startsWith('bin')) extractedBins.push([child.position.x, child.position.y, child.position.z])
+      else if (wpName.startsWith('printer')) extractedPrinters.push([child.position.x, child.position.y, child.position.z])
+      else extractedWaypoints[wpName] = { position: [child.position.x, child.position.y, child.position.z], connections: [] }
+    } else if (nameLower.startsWith('room_')) {
       const label = child.name.replace(/^room_/i, '').replace('_', '.')
-      extractedRooms.push({
-        name: label,
-        id: child.name.toLowerCase(),
-        position: [child.position.x, child.position.y, child.position.z]
-      })
-    }
-    if (child.name.toLowerCase().startsWith('waypoint_') || child.name.toLowerCase().startsWith('wp_')) {
-      const wpName = child.name.toLowerCase().replace('waypoint_', '').replace('wp_', '')
-      if (wpName.startsWith('bathroom')) {
-        extractedBathrooms.push([child.position.x, child.position.y, child.position.z])
-      }
-      if (wpName.startsWith('bin')) {
-        extractedBins.push([child.position.x, child.position.y, child.position.z])
-      }
-      if (wpName.startsWith('printer')) {
-        extractedPrinters.push([child.position.x, child.position.y, child.position.z])
-      }
-      extractedWaypoints[wpName] = {
-        position: [child.position.x, child.position.y, child.position.z],
-        connections: []
-      }
+      extractedRooms.push({ name: label, id: nameLower, position: [child.position.x, child.position.y, child.position.z] })
     }
   })
 

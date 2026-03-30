@@ -82,11 +82,20 @@ function Map({ building, onBack, children }) {
   const toggleWalking = () => {
     if (document.pointerLockElement) {
       document.exitPointerLock()
-      setTimeout(() => setIsWalking(prev => !prev), 100)
     } else {
       setIsWalking(prev => !prev)
     }
   }
+
+  useEffect(() => {
+    const handleLockChange = () => {
+      if (!document.pointerLockElement) {
+        setIsWalking(false)
+      }
+    }
+    document.addEventListener('pointerlockchange', handleLockChange)
+    return () => document.removeEventListener('pointerlockchange', handleLockChange)
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
