@@ -160,10 +160,10 @@ function Map({ building, onBack, children }) {
           <directionalLight position={[10, 10, 5]} intensity={1} />
         </Canvas>
         <div className="floor-indicator">{currentFloor.label}</div>
-        <button className="panel-toggle-btn" onClick={() => setShowPanel(p => !p)}>
-          {showPanel ? '✕' : '🔍'}
-        </button>
       </div>
+      <button className="panel-toggle-btn" onClick={() => setShowPanel(p => !p)}>
+        {showPanel ? '✕' : '🔍'}
+      </button>
       <SearchPanel
         filteredRooms={filteredRooms}
         search={search}

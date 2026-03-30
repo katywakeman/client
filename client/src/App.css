@@ -507,10 +507,10 @@ html, body, #root {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    right: 16px;
-    z-index: 10;
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: 20px;
+    z-index: 60;
     width: 44px;
     height: 44px;
     border-radius: 50%;
