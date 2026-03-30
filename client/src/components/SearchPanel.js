@@ -11,9 +11,9 @@ function highlight(text, term) {
   )
 }
 
-export default function SearchPanel({ filteredRooms, search, setSearch, selectedRoom, roomInfo, allRoomData, roomsWithInfo, isSearching, onRoomSelect, onClear }) {
+export default function SearchPanel({ filteredRooms, search, setSearch, selectedRoom, roomInfo, allRoomData, roomsWithInfo, isSearching, onRoomSelect, onClear, showPanel }) {
   return (
-    <div className="search-panel">
+    <div className={`search-panel ${showPanel ? 'search-panel-open' : ''}`}>
       <div className="search-panel-title">Find a Room</div>
       <input
         className="search-input"

@@ -34,6 +34,7 @@ function Map({ building, onBack, children }) {
 
   const [showInfo, setShowInfo] = useState(false)
   const [floorIndex, setFloorIndex] = useState(0)
+  const [showPanel, setShowPanel] = useState(false)
   const currentFloor = FLOORS[floorIndex]
 
   const { allRoomData, roomsWithInfo } = useRoomData()
@@ -159,6 +160,9 @@ function Map({ building, onBack, children }) {
           <directionalLight position={[10, 10, 5]} intensity={1} />
         </Canvas>
         <div className="floor-indicator">{currentFloor.label}</div>
+        <button className="panel-toggle-btn" onClick={() => setShowPanel(p => !p)}>
+          {showPanel ? '✕' : '🔍'}
+        </button>
       </div>
       <SearchPanel
         filteredRooms={filteredRooms}
@@ -169,8 +173,9 @@ function Map({ building, onBack, children }) {
         allRoomData={allRoomData}
         roomsWithInfo={roomsWithInfo}
         isSearching={isSearching}
-        onRoomSelect={handleRoomSelect}
+        onRoomSelect={(room) => { handleRoomSelect(room); setShowPanel(false) }}
         onClear={() => { setSelectedRoom(null); setRoomInfo(null) }}
+        showPanel={showPanel}
       />
     </div>
   )

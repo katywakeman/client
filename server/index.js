@@ -9,7 +9,9 @@ const Building = require('./models/Building')
 const PORT = process.env.PORT || 3001
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000'
+}))
 app.use(express.json())
 
 mongoose.connect(process.env.MONGO_URI)
