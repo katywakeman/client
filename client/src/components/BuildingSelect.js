@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import API_URL from '../utils/api'
 
 const LOCKED_BUILDINGS = ['Strand', "King's"]
 
@@ -6,7 +7,7 @@ export default function BuildingSelect({ onSelect }) {
   const [buildings, setBuildings] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/buildings')
+    fetch(`${API_URL}/api/buildings`)
       .then(res => res.json())
       .then(data => { if (Array.isArray(data)) setBuildings(data) })
       .catch(() => {})

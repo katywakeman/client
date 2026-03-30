@@ -2,9 +2,9 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const Room = require('./models/room')
-const Lecturer = require('./models/lecturer')
-const Building = require('./models/building')
+const Room = require('./models/Room')
+const Lecturer = require('./models/Lecturer')
+const Building = require('./models/Building')
 
 const PORT = process.env.PORT || 3001
 const app = express()
