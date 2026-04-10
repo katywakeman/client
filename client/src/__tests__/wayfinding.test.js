@@ -1,4 +1,4 @@
-import { findPath, extractRoomsFromScene } from '../utils/wayfinding'
+import { findPath, extractRoomsFromScene, waypointConnections } from '../utils/wayfinding'
 
 const mockGraph = {
   a: { position: [0, 0, 0], connections: ['b'] },
@@ -36,8 +36,42 @@ describe('findPath', () => {
 
   test('path includes intermediate waypoints', () => {
     const result = findPath([0, 0, 0], [2, 0, 0], mockGraph)
-    // start + a + b + c + end
     expect(result.length).toBe(5)
+  })
+})
+
+describe('waypointConnections graph integrity', () => {
+  test('all connections reference existing waypoints', () => {
+    const keys = new Set(Object.keys(waypointConnections))
+    for (const [, targets] of Object.entries(waypointConnections)) {
+      for (const to of targets) {
+        expect(keys.has(to)).toBe(true)
+      }
+    }
+  })
+
+  test('all connections are bidirectional', () => {
+    const nonBidirectional = []
+    for (const [from, targets] of Object.entries(waypointConnections)) {
+      for (const to of targets) {
+        if (!waypointConnections[to]?.includes(from)) {
+          nonBidirectional.push(`${from} -> ${to} (missing reverse)`)
+        }
+      }
+    }
+    expect(nonBidirectional).toEqual([])
+  })
+
+  test('no waypoint connects to itself', () => {
+    for (const [name, targets] of Object.entries(waypointConnections)) {
+      expect(targets).not.toContain(name)
+    }
+  })
+
+  test('no duplicate connections', () => {
+    for (const [, targets] of Object.entries(waypointConnections)) {
+      expect(new Set(targets).size).toBe(targets.length)
+    }
   })
 })
 
@@ -100,9 +134,7 @@ describe('extractRoomsFromScene', () => {
   })
 
   test('waypoint_room_ objects are treated as waypoints not rooms', () => {
-    const scene = makeScene([
-      makeChild('waypoint_room_7_13N', 1, 0, 1),
-    ])
+    const scene = makeScene([makeChild('waypoint_room_7_13N', 1, 0, 1)])
     const { rooms } = extractRoomsFromScene(scene)
     expect(rooms).toHaveLength(0)
   })

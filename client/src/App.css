@@ -444,6 +444,18 @@ html, body, #root {
 .building-none {
   color: #5a6480;
   font-size: 14px;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.6;
+}
+
+.building-wake-link {
+  color: #E12726;
+  text-decoration: underline;
+}
+
+.building-wake-link:hover {
+  color: #c41f1e;
 }
 
 .back-btn {

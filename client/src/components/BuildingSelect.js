@@ -37,7 +37,13 @@ export default function BuildingSelect({ onSelect }) {
           )
         })}
         {buildings.length === 0 && (
-          <p className="building-none">No buildings found</p>
+          <p className="building-none">
+            No buildings found. Please visit{' '}
+            <a href="https://kcl-map.onrender.com" target="_blank" rel="noreferrer" className="building-wake-link">
+              kcl-map.onrender.com
+            </a>{' '}
+            to wake the server, then refresh this page.
+          </p>
         )}
       </div>
     </div>

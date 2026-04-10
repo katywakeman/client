@@ -1,0 +1,121 @@
+
+> client@0.1.0 test
+> react-scripts test --watchAll=false --verbose
+
+PASS src/__tests__/wayfinding.test.js
+  findPath
+    √ returns straight line when graph is empty (5 ms)
+    √ finds path between two connected waypoints (2 ms)
+    √ returns straight line when no path exists to isolated node
+    √ path includes intermediate waypoints (1 ms)
+  waypointConnections graph integrity
+    √ all connections reference existing waypoints (13 ms)
+    √ all connections are bidirectional (1 ms)
+    √ no waypoint connects to itself (10 ms)
+    √ no duplicate connections (5 ms)
+  extractRoomsFromScene
+    √ extracts rooms with correct name and id (1 ms)
+    √ extracts bathroom waypoints (1 ms)
+    √ extracts bin waypoints (1 ms)
+    √ extracts printer waypoints (1 ms)
+    √ amenity waypoints are not added to pathfinding graph (1 ms)
+    √ ignores non-room non-waypoint objects (1 ms)
+    √ waypoint_room_ objects are treated as waypoints not rooms (1 ms)
+
+PASS src/__tests__/mapTraversal.test.js
+  map traversal - corridor routes
+    √ lobby connects to mid_hallway (6 ms)
+    √ lobby connects to door_north (1 ms)
+    √ path from door_north to door_north012 passes through door_north001 and door_north002 (1 ms)
+    √ path from lobby to door_north006 passes through door_north corridor (1 ms)
+    √ path from door_north to door024 is reachable (2 ms)
+    √ path from lobby to door_706 passes through mid_hallway corridor (2 ms)
+    √ path from door_north006 to door001 is direct (1 ms)
+    √ path from door001 to door024 traverses the full corridor (2 ms)
+    √ path from mid_hallway to door_702 passes through door_702001 (1 ms)
+    √ path from door003 to room_7_13n passes through door025 and door026 (1 ms)
+    √ door_north_720 is reachable from lobby (1 ms)
+    √ door_north_21 is reachable from lobby (1 ms)
+
+  console.error
+    An update to TestComponent inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+    [0m [90m 11 |[39m       [33m.[39mthen(data [33m=>[39m {
+     [90m 12 |[39m         [36mif[39m ([33m![39m[33mArray[39m[33m.[39misArray(data)) [36mreturn[39m
+    [31m[1m>[22m[39m[90m 13 |[39m         setAllRoomData(data)
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 14 |[39m         setRoomsWithInfo([36mnew[39m [33mSet[39m(data[33m.[39mfilter(r [33m=>[39m r[33m.[39mlecturers[33m?[39m[33m.[39mlength [33m>[39m [35m0[39m)[33m.[39mmap(r [33m=>[39m r[33m.[39mname)))
+     [90m 15 |[39m       })
+     [90m 16 |[39m       [33m.[39m[36mcatch[39m(() [33m=>[39m {})[0m
+
+      at node_modules/react-dom/cjs/react-dom-client.development.js:18758:19
+      at runWithFiberInDEV (node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom-client.development.js:18757:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom-client.development.js:16409:11)
+      at dispatchSetStateInternal (node_modules/react-dom/cjs/react-dom-client.development.js:9170:13)
+      at setAllRoomData (node_modules/react-dom/cjs/react-dom-client.development.js:9127:7)
+      at src/hooks/useRoomData.js:13:9
+
+  console.error
+    An update to TestComponent inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+    [0m [90m 12 |[39m         [36mif[39m ([33m![39m[33mArray[39m[33m.[39misArray(data)) [36mreturn[39m
+     [90m 13 |[39m         setAllRoomData(data)
+    [31m[1m>[22m[39m[90m 14 |[39m         setRoomsWithInfo([36mnew[39m [33mSet[39m(data[33m.[39mfilter(r [33m=>[39m r[33m.[39mlecturers[33m?[39m[33m.[39mlength [33m>[39m [35m0[39m)[33m.[39mmap(r [33m=>[39m r[33m.[39mname)))
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 15 |[39m       })
+     [90m 16 |[39m       [33m.[39m[36mcatch[39m(() [33m=>[39m {})
+     [90m 17 |[39m   }[33m,[39m [])[0m
+
+      at node_modules/react-dom/cjs/react-dom-client.development.js:18758:19
+      at runWithFiberInDEV (node_modules/react-dom/cjs/react-dom-client.development.js:874:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom-client.development.js:18757:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom-client.development.js:16409:11)
+      at dispatchSetStateInternal (node_modules/react-dom/cjs/react-dom-client.development.js:9170:13)
+      at setRoomsWithInfo (node_modules/react-dom/cjs/react-dom-client.development.js:9127:7)
+      at src/hooks/useRoomData.js:14:9
+
+PASS src/__tests__/SearchPanel.test.js
+  SearchPanel
+    √ renders all rooms (35 ms)
+    √ shows no results message when filteredRooms is empty (4 ms)
+    √ calls onRoomSelect when a room button is clicked (9 ms)
+    √ shows dropdown arrow for rooms with info (4 ms)
+    √ shows lecturer info when room is selected (8 ms)
+    √ shows clear button when a room is selected (4 ms)
+    √ calls onClear when clear button is clicked (5 ms)
+    √ calls setSearch when input changes (5 ms)
+    √ highlights matching search term in room name (6 ms)
+    √ applies search-panel-open class when showPanel is true (3 ms)
+
+PASS src/__tests__/useRoomData.test.js
+  useRoomData
+    √ returns empty allRoomData initially (90 ms)
+    √ fetches and sets allRoomData (75 ms)
+    √ sets roomsWithInfo only for rooms with lecturers (78 ms)
+    √ does not set allRoomData if response is not an array (16 ms)
+    √ handles fetch error gracefully (17 ms)
+
+Test Suites: 4 passed, 4 total
+Tests:       42 passed, 42 total
+Snapshots:   0 total
+Time:        5.358 s
+Ran all test suites.
