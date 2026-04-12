@@ -21,19 +21,21 @@ export default function BuildingSelect({ onSelect }) {
   return (
     <div className="building-select">
       <h1 className="building-select-title">Select a Building</h1>
-      <div className="building-grid">
+      <div className="building-grid" role="list">
         {buildings.map(b => {
           const locked = LOCKED_BUILDINGS.includes(b.name)
           return (
-            <button
-              key={b._id}
-              className={`building-btn ${locked ? 'building-btn-locked' : ''}`}
-              onClick={() => handleClick(b)}
-              disabled={locked}
-            >
-              {locked && <span className="building-lock">🔒</span>}
-              {b.name}
-            </button>
+            <div key={b._id} role="listitem">
+              <button
+                className={`building-btn ${locked ? 'building-btn-locked' : ''}`}
+                onClick={() => handleClick(b)}
+                disabled={locked}
+                aria-label={locked ? `${b.name} (coming soon)` : b.name}
+              >
+                {locked && <span className="building-lock" aria-hidden="true">🔒</span>}
+                {b.name}
+              </button>
+            </div>
           )
         })}
         {buildings.length === 0 && (

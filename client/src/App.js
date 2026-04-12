@@ -108,25 +108,25 @@ function Map({ building, onBack, children }) {
 
   return (
     <div className="map-container">
-      <div className="map-viewport">
-        <button className="info-btn" onClick={() => setShowInfo(true)}>i</button>
+      <main className="map-viewport" aria-label={`${building.name} floor map`}>
+        <button className="info-btn" onClick={() => setShowInfo(true)} aria-label="Open help guide">i</button>
         <button className="back-btn" onClick={onBack}>← Buildings</button>
-        <div className="floor-controls">
-          <button className="floor-btn" onClick={() => handleFloorChange(1)} disabled={floorIndex >= FLOORS.length - 1}>▲</button>
-          <button className="floor-btn" onClick={() => handleFloorChange(-1)} disabled={floorIndex <= 0}>▼</button>
+        <div className="floor-controls" role="group" aria-label="Floor navigation">
+          <button className="floor-btn" onClick={() => handleFloorChange(1)} disabled={floorIndex >= FLOORS.length - 1} aria-label="Go up a floor">▲</button>
+          <button className="floor-btn" onClick={() => handleFloorChange(-1)} disabled={floorIndex <= 0} aria-label="Go down a floor">▼</button>
         </div>
         {showInfo && <InfoModal onClose={() => setShowInfo(false)} />}
         {children}
-        <button className="labels-toggle-btn" onClick={() => setShowLabels(!showLabels)}>
+        <button className="labels-toggle-btn" onClick={() => setShowLabels(!showLabels)} aria-pressed={showLabels}>
           {showLabels ? 'Hide Labels' : 'Show Labels'}
         </button>
-        <div className="view-toggle" onClick={toggleWalking}>
-          <span className={`view-toggle-label ${!isWalking ? 'active' : ''}`}>Orbit</span>
-          <div className={`view-toggle-switch ${isWalking ? 'on' : ''}`}>
+        <button className="view-toggle" onClick={toggleWalking} aria-pressed={isWalking} aria-label={isWalking ? 'Switch to orbit view' : 'Switch to walking view'}>
+          <span className={`view-toggle-label ${!isWalking ? 'active' : ''}`} aria-hidden="true">Orbit</span>
+          <div className={`view-toggle-switch ${isWalking ? 'on' : ''}`} aria-hidden="true">
             <div className="view-toggle-knob" />
           </div>
-          <span className={`view-toggle-label ${isWalking ? 'active' : ''}`}>Walk</span>
-        </div>
+          <span className={`view-toggle-label ${isWalking ? 'active' : ''}`} aria-hidden="true">Walk</span>
+        </button>
         <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }}>
           <Suspense fallback={null}>
             {currentFloor.file
@@ -137,13 +137,13 @@ function Map({ building, onBack, children }) {
               <RoomLabel key={i} room={room} isSelected={selectedRoom?.name === room.name} onClick={() => handleRoomSelect(room)} />
             ))}
             {showLabels && bathrooms.map((pos, i) => (
-              <AmenityMarker key={i} position={pos} emoji="🚻" />
+              <AmenityMarker key={i} position={pos} emoji="🚻" label="Bathroom" />
             ))}
             {showLabels && bins.map((pos, i) => (
-              <AmenityMarker key={i} position={pos} emoji="🗑️" />
+              <AmenityMarker key={i} position={pos} emoji="🗑️" label="Bin" />
             ))}
             {showLabels && printers.map((pos, i) => (
-              <AmenityMarker key={i} position={pos} emoji="🖨️" />
+              <AmenityMarker key={i} position={pos} emoji="🖨️" label="Printer" />
             ))}
             {selectedRoom && <PathLine start={[0, 0, 0]} end={selectedRoom.position} />}
             {isWalking ? (
@@ -159,9 +159,9 @@ function Map({ building, onBack, children }) {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
         </Canvas>
-        <div className="floor-indicator">{currentFloor.label}</div>
-      </div>
-      <button className="panel-toggle-btn" onClick={() => setShowPanel(p => !p)}>
+        <div className="floor-indicator" aria-live="polite" aria-atomic="true">{currentFloor.label}</div>
+      </main>
+      <button className="panel-toggle-btn" onClick={() => setShowPanel(p => !p)} aria-label={showPanel ? 'Close search panel' : 'Open search panel'} aria-expanded={showPanel}>
         {showPanel ? '✕' : '🔍'}
       </button>
       <SearchPanel

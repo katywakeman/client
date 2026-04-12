@@ -252,6 +252,23 @@ html, body, #root {
   border: 1px solid rgba(225, 39, 38, 0.5);
 }
 
+.room-label-selected {
+  background: #E12726;
+  color: #ffffff;
+  border-color: #E12726;
+}
+
+:focus-visible {
+  outline: 2px solid #E12726;
+  outline-offset: 2px;
+}
+
+.search-input:focus-visible {
+  outline: 2px solid #E12726;
+  outline-offset: 0;
+  border-color: #E12726;
+}
+
 .search-highlight {
   background: #E12726;
   color: #ffffff;
