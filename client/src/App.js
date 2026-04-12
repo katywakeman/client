@@ -127,8 +127,8 @@ function Map({ building, onBack, children }) {
           </div>
           <span className={`view-toggle-label ${isWalking ? 'active' : ''}`} aria-hidden="true">Walk</span>
         </button>
-        <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }}>
-          <Suspense fallback={null}>
+        <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }} gl={{ failIfMajorPerformanceCaveat: false }}>
+          <Suspense fallback={<div className="canvas-loading" aria-live="polite">Loading map...</div>}>
             {currentFloor.file
               ? <BlenderModel key={currentFloor.file} path={currentFloor.file} onLoad={handleSceneLoad} />
               : null
