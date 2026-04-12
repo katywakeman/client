@@ -540,8 +540,8 @@ html, body, #root {
     bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     right: 20px;
     z-index: 60;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: #E12726;
     color: white;
