@@ -29,6 +29,8 @@ function Map({ building, onBack, children }) {
   const [bathrooms, setBathrooms] = useState([])
   const [bins, setBins] = useState([])
   const [printers, setPrinters] = useState([])
+  const [lifts, setLifts] = useState([])
+  const [stairs, setStairs] = useState([])
   const [search, setSearch] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
 
@@ -70,14 +72,18 @@ function Map({ building, onBack, children }) {
     setBathrooms([])
     setBins([])
     setPrinters([])
+    setLifts([])
+    setStairs([])
   }
 
   const handleSceneLoad = (scene) => {
-    const { rooms, bathrooms, bins, printers } = extractRoomsFromScene(scene)
+    const { rooms, bathrooms, bins, printers, lifts, stairs } = extractRoomsFromScene(scene)
     setRoomList(rooms)
     setBathrooms(bathrooms)
     setBins(bins)
     setPrinters(printers)
+    setLifts(lifts)
+    setStairs(stairs)
   }
 
   const toggleWalking = () => {
@@ -127,8 +133,9 @@ function Map({ building, onBack, children }) {
           </div>
           <span className={`view-toggle-label ${isWalking ? 'active' : ''}`} aria-hidden="true">Walk</span>
         </button>
+        {!roomList.length && <div className="canvas-loading" aria-live="polite">Loading map...</div>}
         <Canvas camera={{ position: isWalking ? [0, 1.6, 0] : [0, 2, 5], fov: 50 }} gl={{ failIfMajorPerformanceCaveat: false }}>
-          <Suspense fallback={<div className="canvas-loading" aria-live="polite">Loading map...</div>}>
+          <Suspense fallback={null}>
             {currentFloor.file
               ? <BlenderModel key={currentFloor.file} path={currentFloor.file} onLoad={handleSceneLoad} />
               : null
@@ -144,6 +151,12 @@ function Map({ building, onBack, children }) {
             ))}
             {showLabels && printers.map((pos, i) => (
               <AmenityMarker key={i} position={pos} emoji="🖨️" label="Printer" />
+            ))}
+            {showLabels && lifts.map((pos, i) => (
+              <AmenityMarker key={i} position={pos} emoji="🛗" label="Lift" />
+            ))}
+            {showLabels && stairs.map((pos, i) => (
+              <AmenityMarker key={i} position={pos} emoji="🪜" label="Stairs" />
             ))}
             {selectedRoom && <PathLine start={[0, 0, 0]} end={selectedRoom.position} />}
             {isWalking ? (

@@ -63,6 +63,8 @@ export function extractRoomsFromScene(scene) {
   const extractedBathrooms = []
   const extractedBins = []
   const extractedPrinters = []
+  const extractedLifts = []
+  const extractedStairs = []
 
   scene.traverse((child) => {
     const nameLower = child.name.toLowerCase()
@@ -71,6 +73,8 @@ export function extractRoomsFromScene(scene) {
       if (wpName.startsWith('bathroom')) extractedBathrooms.push([child.position.x, child.position.y, child.position.z])
       else if (wpName.startsWith('bin')) extractedBins.push([child.position.x, child.position.y, child.position.z])
       else if (wpName.startsWith('printer')) extractedPrinters.push([child.position.x, child.position.y, child.position.z])
+      else if (wpName.startsWith('lift')) extractedLifts.push([child.position.x, child.position.y, child.position.z])
+      else if (wpName.startsWith('stairs')) extractedStairs.push([child.position.x, child.position.y, child.position.z])
       else extractedWaypoints[wpName] = { position: [child.position.x, child.position.y, child.position.z], connections: [] }
     } else if (nameLower.startsWith('room_')) {
       const label = child.name.replace(/^room_/i, '').replace('_', '.')
@@ -85,7 +89,7 @@ export function extractRoomsFromScene(scene) {
     waypointGraph = extractedWaypoints
   }
 
-  return { rooms: extractedRooms, bathrooms: extractedBathrooms, bins: extractedBins, printers: extractedPrinters }
+  return { rooms: extractedRooms, bathrooms: extractedBathrooms, bins: extractedBins, printers: extractedPrinters, lifts: extractedLifts, stairs: extractedStairs }
 }
 
 export function findPath(startPos, endPos, graph) {
